@@ -18,7 +18,7 @@ object TodoServer:
       TodoRoutes.todoRoutes[F](todoBoundary)
       ).orNotFound
 
-    val finalHttpApp = Logger.httpApp(true, true)(httpApp)
+    val finalHttpApp = Logger.httpApp(false, false)(httpApp)
 
     EmberServerBuilder.default[F]
       .withHost(ipv4"0.0.0.0")
