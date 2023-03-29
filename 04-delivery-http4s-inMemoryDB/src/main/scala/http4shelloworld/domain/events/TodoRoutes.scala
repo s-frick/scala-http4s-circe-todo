@@ -31,12 +31,16 @@ object TodoRoutes:
           resp <- Ok(todo.asJson)
         } yield resp
         
+        
+        
       case GET -> Root / "todos" / IntVar(id) =>
         for {
           todo <- T.readOneById(id)
           resp <- Ok(todo.asJson)
         } yield resp
 
+        
+        
       case req @ POST -> Root / "todos" =>
         for {
           todo <- req.as[Todo]

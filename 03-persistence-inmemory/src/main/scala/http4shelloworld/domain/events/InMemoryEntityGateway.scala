@@ -12,6 +12,7 @@ object InMemoryEntityGateway {
 
   def dsl[F[_]](implicit a: Applicative[F]): EntityGateway[F, Int] = {
     new EntityGateway[F, Int] {
+      
       override def writeOne(todo: Todo): F[Int] =
         if (todos.isEmpty) todos = Vector(todo)
         else todos = todos :+ todo
@@ -27,6 +28,8 @@ object InMemoryEntityGateway {
         a.pure(
           todos
         )
+        
+        
     }
   }
 }

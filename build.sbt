@@ -22,12 +22,14 @@ lazy val domain = (project in file("01-domain"))
     name := "domain",
     libraryDependencies ++= testDependencies ++ common,
   )
+
 lazy val core = (project in file("02-core"))
   .dependsOn(domain)
   .settings(
     name := "core",
     libraryDependencies ++= testDependencies ++ common,
   )
+
 lazy val inmemory = (project in file("03-persistence-inmemory"))
   .dependsOn(domain)
   .dependsOn(core)
@@ -36,10 +38,27 @@ lazy val inmemory = (project in file("03-persistence-inmemory"))
     libraryDependencies ++= testDependencies ++ common,
   )
 
+lazy val `deliver-http` = (project in file("04-delivery-http4s-inMemoryDB"))
+  .dependsOn(domain)
+  .dependsOn(core)
+  .dependsOn(inmemory)
+  .settings(
+    name := "delivery-http4s-inMemoryDB",
+    libraryDependencies ++= Seq(
+      "org.http4s" %% "http4s-ember-server" % Http4sVersion,
+      "org.http4s" %% "http4s-ember-client" % Http4sVersion,
+      "org.http4s" %% "http4s-circe" % Http4sVersion,
+      "org.http4s" %% "http4s-dsl" % Http4sVersion,
+      "ch.qos.logback" % "logback-classic" % LogbackVersion,
+      "io.circe" %% "circe-generic" % CirceVersion,
+    ) ++ testDependencies ++ common,
+  )
+
 lazy val root = (project in file("."))
   .dependsOn(domain)
   .dependsOn(core)
   .dependsOn(inmemory)
+  .dependsOn(`deliver-http`)
   .settings(
     name := "http4s-hello",
     libraryDependencies ++= Seq(
